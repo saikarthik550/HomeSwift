@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggregated API Responses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .meter {
+            height: 20px;
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .meter span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: #76c7c0;
+            transition: width 0.5s ease-in-out;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        .status.success {
+            background-color: #28a745;
+        }
+        .status.failure {
+            background-color: #dc3545;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aggregated API Responses</h1>
+
+    <h2>Credit Score</h2>
+    <div class="meter">
+        <span style="width: {{ (credit_score.ficoScore / 850 * 100) | round(2) }}%;"></span>
+    </div>
+    <p>Score: {{ credit_score.ficoScore }} ({{ credit_score.ficoRange }})</p>
+
+    <h2>Customer Details</h2>
+    <p><strong>Name:</strong> {{ customer_details.name }}</p>
+    <p><strong>Address:</strong> {{ customer_details.address }}</p>
+    <p><strong>Email:</strong> {{ customer_details.email }}</p>
+    <p><strong>Phone:</strong> {{ customer_details.phone }}</p>
+    <p><strong>Home Ownership:</strong> {{ customer_details.home_ownership }}</p>
+
+    <h2>Political Exposure Screening</h2>
+    <div class="status {{ 'success' if political_status == 'Successful' else 'failure' }}">
+        {{ political_status }}
+    </div>
+
+    <h2>Transaction Details</h2>
+{% if transaction_details %}
+<table>
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Transaction Amount</th>
+            <th>Transaction Date</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transaction_details %}
+        <tr>
+            <td>{{ transaction.TransactionId }}</td>
+            <td>{{ transaction.Amount.Amount }} {{ transaction.Amount.Currency }}</td>
+            <td>{{ transaction.BookingDateTime }}</td>
+            <td>{{ transaction.TransactionInformation }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No transaction details available.</p>
+{% endif %}
+
+</body>
+</html>
