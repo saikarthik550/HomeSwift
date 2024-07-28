@@ -1,6 +1,10 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template,Response,redirect, url_for,flash
 import requests
 import logging
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import json
 
 app = Flask(__name__)
 
@@ -11,8 +15,32 @@ CLIENT_SECRET = 'DbVckKuXVrK7hShvvC8644bLedsKaY1Xvw0m4K3aoxA='
 REDIRECT_URL = "https://70947a22-95b0-44b9-9e6f-670c8893baed.example.org/redirect"
 API_URL_PREFIX = "https://ob.sandbox.natwest.com"
 PSU_USERNAME = "123456789012@70947a22-95b0-44b9-9e6f-670c8893baed.example.org"
+# Email credentials
+SENDER_EMAIL = "ashibu6@gmail.com"
+SENDER_PASSWORD = "vgwz ubtw emvw fzml"
+RECIPIENT_EMAIL = "ashwinisugumaran1@gmail.com"
 
 logging.basicConfig(level=logging.DEBUG)
+
+def send_email(subject, body):
+    msg = MIMEMultipart()
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = RECIPIENT_EMAIL
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        text = msg.as_string()
+        server.sendmail(SENDER_EMAIL, RECIPIENT_EMAIL, text)
+        server.quit()
+        return "Email sent successfully"
+    except Exception as e:
+        app.logger.error(f"Error sending email: {e}")
+        return f"Failed to send email: {e}"
 
 def get_token_endpoint():
     try:
@@ -47,7 +75,6 @@ def get_consent_id(api_url_prefix, access_token):
     url = f"{api_url_prefix}/open-banking/v3.1/aisp/account-access-consents"
     payload = {
         "Data": {
-
             "Permissions": [
                 "ReadAccountsDetail",
                 "ReadBalances",
@@ -57,7 +84,6 @@ def get_consent_id(api_url_prefix, access_token):
                 "ReadCreditScore",
                 "ReadAccountsBasic",
                 "ReadTransactionsDetailed"
-
             ]
         },
         "Risk": {}
@@ -148,7 +174,6 @@ def political_exposure_screening(api_url_prefix, access_token, first_name, surna
         app.logger.error(f"Error performing political exposure screening: {e}")
         return None
 
-
 def get_transaction_details(api_url_prefix, access_token, account_id):
     url = f"{api_url_prefix}/open-banking/v3.1/aisp/accounts/{account_id}/transactions"
     headers = {
@@ -175,7 +200,6 @@ def get_transaction_details(api_url_prefix, access_token, account_id):
         if e.response is not None:
             app.logger.error(f"Response Content: {e.response.content}")
         return []
-
 
 @app.route('/')
 def index():
@@ -260,11 +284,99 @@ def index():
     if not transaction_details:
         transaction_details = {"error": "Failed to retrieve transaction details"}
 
-    return render_template('index.html',
-                           credit_score=credit_score_data,
-                           customer_details=customer_details,
-                           political_status=political_status,
-                           transaction_details=transaction_details)
+    # Render the template
+    response = render_template('index.html',
+                               credit_score=credit_score_data,
+                               customer_details=customer_details,
+                               political_status=political_status,
+                               transaction_details=transaction_details)
+    
+    return response
 
+@app.route('/send_email', methods=['POST'])
+def send_email_route():
+    data = request.json
+    try:
+        subject = "API Response Summary"
+        body = (
+            f"Credit Score: {json.dumps(data.get('credit_score', {}), indent=4)}\n\n"
+            f"Customer Details: {json.dumps(data.get('customer_details', {}), indent=4)}\n\n"
+            f"Political Exposure Status: {data.get('political_status', 'N/A')}\n\n"
+            f"Transaction Details: {json.dumps(data.get('transaction_details', []), indent=4)}"
+        )
+        message = send_email(subject, body)
+        # Check if the email sending was successful
+        success = message.startswith("Email sent successfully")
+        return jsonify({"success": success, "message": message})
+    except Exception as e:
+        app.logger.error(f"Error in send_email_route: {e}")
+        return jsonify({"success": False, "message": "Failed to send email"}), 500
+    
+@app.route('/download_response', methods=['POST'])
+def download_response():
+    data = request.json
+
+    # Construct the file content
+    file_content = f"""
+    Credit Score:
+    Score: {data['credit_score']['ficoScore']} ({data['credit_score']['ficoRange']})
+
+    Customer Details:
+    Name: {data['customer_details'].get('name', 'N/A')}
+    Address: {data['customer_details'].get('address', 'N/A')}
+    Email: {data['customer_details'].get('email', 'N/A')}
+    Phone: {data['customer_details'].get('phone', 'N/A')}
+    Home Ownership: {data['customer_details'].get('home_ownership', 'N/A')}
+
+    Political Exposure Screening:
+    Status: {data['political_status']}
+
+    Transaction Details:
+    {data['transaction_details']}
+    """
+
+    return Response(
+        file_content,
+        mimetype='text/plain',
+        headers={"Content-Disposition": "attachment;filename=api_response.txt"}
+    )
+
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+@app.route('/existing_customer')
+def existing_customer():
+    return render_template('existing_customer.html')
+
+@app.route('/new_customer')
+def new_customer():
+    return render_template('new_customer.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        customer_number = request.form.get('customer_number')
+        if not customer_number:
+            flash('Customer number is required.')
+            return redirect(url_for('existing_customer'))
+        
+        # Example of logging the customer number for debugging
+        app.logger.debug(f"Received customer number: {customer_number}")
+
+        # Add your logic to validate the customer_number here
+        # For example, you might have some database check or API call
+
+        # Assuming the customer_number is valid, redirect to the home page
+        return redirect(url_for('index'))
+
+    except Exception as e:
+        app.logger.error(f"Error in login route: {e}")
+        return jsonify({"error": "An error occurred during login."}), 500
+    
+@app.route('/instant_verification')
+def instant_verification():
+    return render_template('instantVerification.html')
+    
 if __name__ == '__main__':
     app.run(debug=True)

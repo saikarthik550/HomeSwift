@@ -3,37 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aggregated API Responses</title>
+    <title>Financial Wealth</title>
     <style>
+        /* Existing CSS */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
         }
-        .meter {
-            height: 20px;
-            width: 100%;
-            background: #e0e0e0;
-            border-radius: 5px;
-            overflow: hidden;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        .response-section {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .response-section h2 {
+            background-color: #0056b3;
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 0;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        .response-section p, .response-section pre {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
             margin: 10px 0;
-        }
-        .meter span {
-            display: block;
-            height: 100%;
-            width: 0;
-            background: #76c7c0;
-            transition: width 0.5s ease-in-out;
+            font-size: 1em;
         }
         .status {
-            padding: 10px;
-            border-radius: 5px;
-            color: white;
+            font-weight: bold;
         }
         .status.success {
-            background-color: #28a745;
+            color: #4CAF50; /* Green */
         }
         .status.failure {
-            background-color: #dc3545;
+            color: #f44336; /* Red */
+        }
+        .circle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+        .circle svg {
+            transform: rotate(-90deg);
+            overflow: visible;
+        }
+        .circle .background,
+        .circle .progress {
+            fill: none;
+            stroke-width: 15;
+        }
+        .circle .background {
+            stroke: #e0e0e0;
+        }
+        .circle .progress {
+            stroke: #0056b3;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .circle .text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .circle .text p {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 20px;
+            font-size: 1em;
+            color: #ffffff;
+            background-color: #0056b3;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #003d80;
+        }
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            z-index: 1000;
+            font-size: 1em;
+        }
+        .notification.error {
+            background-color: #f44336;
         }
         table {
             width: 100%;
@@ -44,60 +138,208 @@
             border: 1px solid #ddd;
         }
         th, td {
-            padding: 10px;
+            padding: 12px;
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .button-container button {
+            flex: 1; /* Makes buttons occupy equal width */
+            margin: 0 10px; /* Margin between buttons */
+        }
+        .button-container button:first-child {
+            margin-right: auto; /* Pushes the first button to the left */
+        }
+        .button-container button:last-child {
+            margin-left: auto; /* Pushes the last button to the right */
         }
     </style>
 </head>
 <body>
-    <h1>Aggregated API Responses</h1>
+    <div class="container">
+        <h1>Your Wealth Overview</h1>
 
-    <h2>Credit Score</h2>
-    <div class="meter">
-        <span style="width: {{ (credit_score.ficoScore / 850 * 100) | round(2) }}%;"></span>
+        <!-- Credit Score -->
+        <div class="response-section">
+            <h2>Credit Score</h2>
+            <div class="circle">
+                <svg width="150" height="150">
+                    <circle class="background" cx="75" cy="75" r="70"/>
+                    <circle class="progress" cx="75" cy="75" r="70"/>
+                </svg>
+                <div class="text">
+                    <p>Score: {{ credit_score.ficoScore }} ({{ credit_score.ficoRange }})</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Details -->
+        <div class="response-section">
+            <h2>Customer Details</h2>
+            <pre>
+                {% if customer_details %}
+                    Name: {{ customer_details.name | default('N/A') }}
+                    Address: {{ customer_details.address | default('N/A') }}
+                    Email: {{ customer_details.email | default('N/A') }}
+                    Phone: {{ customer_details.phone | default('N/A') }}
+                    Home Ownership: {{ customer_details.home_ownership | default('N/A') }}
+                {% else %}
+                    No customer details available.
+                {% endif %}
+            </pre>
+        </div>
+
+        <!-- Political Exposure Screening -->
+        <div class="response-section">
+            <h2>Political Exposure Screening</h2>
+            <pre>
+                {% if political_status %}
+                    <span class="status {{ political_status | lower }}">{{ political_status }}</span>
+                {% else %}
+                    No political exposure data available.
+                {% endif %}
+            </pre>
+        </div>
+
+        <!-- Transaction Details -->
+        <div class="response-section">
+            <h2>Transaction Details</h2>
+            {% if transaction_details %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Transaction Amount</th>
+                        <th>Transaction Date</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transaction_details %}
+                    <tr>
+                        <td>{{ transaction.TransactionId }}</td>
+                        <td>{{ transaction.Amount.Amount }} {{ transaction.Amount.Currency }}</td>
+                        <td>{{ transaction.BookingDateTime }}</td>
+                        <td>{{ transaction.TransactionInformation }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <pre>No transaction details available.</pre>
+            {% endif %}
+        </div>
+
+        <!-- Button Container -->
+        <div class="button-container">
+            <!-- Send Email Button -->
+            <button id="sendMailButton" class="button">Send Mail</button>
+
+            <!-- Download Button -->
+            <button id="downloadButton" class="button">Download Response</button>
+        </div>
     </div>
-    <p>Score: {{ credit_score.ficoScore }} ({{ credit_score.ficoRange }})</p>
 
-    <h2>Customer Details</h2>
-    <p><strong>Name:</strong> {{ customer_details.name }}</p>
-    <p><strong>Address:</strong> {{ customer_details.address }}</p>
-    <p><strong>Email:</strong> {{ customer_details.email }}</p>
-    <p><strong>Phone:</strong> {{ customer_details.phone }}</p>
-    <p><strong>Home Ownership:</strong> {{ customer_details.home_ownership }}</p>
+    <!-- Notification container -->
+    <div id="notification" class="notification"></div>
 
-    <h2>Political Exposure Screening</h2>
-    <div class="status {{ 'success' if political_status == 'Successful' else 'failure' }}">
-        {{ political_status }}
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Circle Progress
+            var ficoScore = {{ credit_score.ficoScore }};
+            var maxScore = 850; // Maximum possible credit score
+            var percentage = (ficoScore / maxScore) * 100;
+            var strokeDashoffset = 440 - (440 * (percentage / 100));
 
-    <h2>Transaction Details</h2>
-{% if transaction_details %}
-<table>
-    <thead>
-        <tr>
-            <th>Transaction ID</th>
-            <th>Transaction Amount</th>
-            <th>Transaction Date</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for transaction in transaction_details %}
-        <tr>
-            <td>{{ transaction.TransactionId }}</td>
-            <td>{{ transaction.Amount.Amount }} {{ transaction.Amount.Currency }}</td>
-            <td>{{ transaction.BookingDateTime }}</td>
-            <td>{{ transaction.TransactionInformation }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No transaction details available.</p>
-{% endif %}
+            var progressCircle = document.querySelector('.circle .progress');
+            progressCircle.style.strokeDashoffset = strokeDashoffset;
 
+            document.getElementById('sendMailButton').addEventListener('click', function() {
+                const data = {
+                    credit_score: {{ credit_score | tojson }},
+                    customer_details: {{ customer_details | tojson }},
+                    political_status: "{{ political_status }}",
+                    transaction_details: {{ transaction_details | tojson }}
+                };
+
+                fetch('/send_email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message.includes('successfully')) {
+                        showNotification('Email sent successfully!', 'success');
+                    } else {
+                        showNotification('Failed to send email.', 'error');
+                    }
+                })
+                .catch(error => {
+                    showNotification('Error sending email', 'error');
+                    console.error('Error:', error);
+                });
+            });
+
+            document.getElementById('downloadButton').addEventListener('click', function() {
+                const data = {
+                    credit_score: {{ credit_score | tojson }},
+                    customer_details: {{ customer_details | tojson }},
+                    political_status: "{{ political_status }}",
+                    transaction_details: {{ transaction_details | tojson }}
+                };
+
+                fetch('/download_response', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob(); // Convert response to a blob
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'api_response.txt'; // Filename for download
+                    document.body.appendChild(a);
+                    a.click(); // Trigger the download
+                    a.remove(); // Clean up
+                    window.URL.revokeObjectURL(url); // Clean up after download
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Error downloading file', 'error');
+                });
+            });
+
+            function showNotification(message, type) {
+                var notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = 'notification ' + (type === 'error' ? 'error' : '');
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 </html>

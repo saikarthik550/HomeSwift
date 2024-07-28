@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Open Rent</h1>
+    </header>
+    
+    <div class="container">
+        <div class="property-info">
+            <img src="{{ url_for('static', filename='/images/property-image1.jpg') }}" alt="Property Image" class="property-image">
+            
+            <div class="property-details">
+                <h2>£3,950.00 per month</h2>
+                <h3>£911.54 per week</h3>
+                <p>No admin fees</p>
+                <p>No hidden charges</p>
+                <a href="/instant_verification" class="btn-highlight">Instant Verify with Natwest</a>
+                <div class="actions">
+                    <a href="#" class="btn-action">Ready to Rent Now?</a>
+                    <a href="#" class="btn-action">Message Landlord</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

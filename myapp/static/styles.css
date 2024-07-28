@@ -1,0 +1,153 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif; /* Font for the page */
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9; /* Light grey background color */
+    color: #333; /* Default text color */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Header styling */
+header {
+    width: 100%; /* Full width */
+    background-color: #007bff; /* Header background color */
+    color: white; /* Text color */
+    padding: 20px 0; /* Padding around the text */
+    text-align: center; /* Center-align text */
+    position: fixed; /* Fixed position at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure it stays on top of other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
+}
+
+/* Title styling */
+header h1 {
+    margin: 0; /* Remove default margin */
+    font-size: 2.5em; /* Larger font size for the title */
+    font-weight: bold; /* Bold text for emphasis */
+    letter-spacing: 1px; /* Slight spacing between letters */
+}
+
+/* Container for the main content */
+.container {
+    max-width: 1200px; /* Maximum width of the container */
+    margin: 80px auto 0; /* Margin top adjusted for header height */
+    padding: 20px; /* Padding inside the container */
+}
+
+/* Property info section */
+.property-info {
+    display: flex; /* Flexbox layout for image and details */
+    align-items: flex-start; /* Align items to the start */
+    gap: 20px; /* Space between image and details */
+}
+
+/* Property image styling */
+.property-image {
+    max-width: 600px; /* Adjust the maximum width of the image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Rounded corners */
+}
+
+/* Property details styling */
+.property-details {
+    flex: 1; /* Take up remaining space */
+}
+
+/* Property details headings and paragraphs */
+.property-details h2 {
+    color: #333; /* Dark color for better contrast */
+    font-size: 2em; /* Larger font size for price */
+    margin: 0; /* Remove default margin */
+}
+
+.property-details h3 {
+    color: #555; /* Slightly lighter color for weekly rate */
+    font-size: 1.5em; /* Slightly smaller font size for weekly rate */
+    margin: 10px 0; /* Space around the heading */
+}
+
+.property-details p {
+    margin: 10px 0; /* Space above and below each paragraph */
+    font-size: 1.1em; /* Slightly larger text */
+}
+
+/* General button styling */
+.btn-action {
+    display: inline-block; /* Inline-block for buttons */
+    padding: 10px 20px; /* Padding inside the button */
+    margin: 10px 0; /* Space around the button */
+    background-color: #007bff; /* Primary button color */
+    color: #fff; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1em; /* Font size for button text */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center-align button text */
+    text-decoration: none; /* Remove underline from links */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.btn-action:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.btn-highlight {
+    background-color: #ff6600; /* Highlight color */
+    border: 2px solid #e55e00; /* Border color for emphasis */
+    font-weight: bold; /* Bold text */
+    animation: blink 1s infinite; /* Apply the blinking animation */
+}
+
+.btn-highlight:hover {
+    background-color: #e55e00; /* Darker highlight color on hover */
+}
+
+/* New style for blinking effect */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Actions section */
+.actions {
+    margin-top: 20px; /* Space above the actions */
+}
+
+/* Mobile-like screen for verification */
+.verify-container {
+    max-width: 400px; /* Limit the width to look like a mobile screen */
+    margin: 50px auto; /* Center align */
+    padding: 20px; /* Padding inside the container */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center; /* Center align text */
+    background-color: #fff; /* White background */
+}
+
+.verify-container h2 {
+    font-size: 1.5em; /* Larger font size for the heading */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.verify-container .btn-action {
+    display: block; /* Block display for buttons */
+    margin: 10px auto; /* Center align buttons with margin */
+    padding: 10px 20px; /* Padding inside buttons */
+    font-size: 1.1em; /* Slightly larger font size */
+    background-color: #007bff; /* Primary button color */
+    color: #fff; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center-align button text */
+    text-decoration: none; /* Remove underline from links */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.verify-container .btn-action:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
