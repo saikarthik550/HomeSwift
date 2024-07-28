@@ -306,7 +306,7 @@ def index():
         }
 
     # Perform political exposure screening
-    first_name = 'MIKHAIL'  # Example first name
+    first_name = 'RON'  # Example first name
     surname = 'KARPUSHIN'  # Example surname
     country_code = 'GB'  # Example country code
     political_exposure = political_exposure_screening(API_URL_PREFIX, api_access_token, first_name, surname, country_code)
