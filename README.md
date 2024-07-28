@@ -31,7 +31,7 @@
 
 6. Run the Flask application:
     ```bash
-    python app.py
+    python app.py 
     ```
 
 ## Usage
