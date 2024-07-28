@@ -186,18 +186,35 @@
         <!-- Customer Details -->
         <div class="response-section">
             <h2>Customer Details</h2>
-            <pre>
-                {% if customer_details %}
-                    Name: {{ customer_details.name | default('N/A') }}
-                    Address: {{ customer_details.address | default('N/A') }}
-                    Email: {{ customer_details.email | default('N/A') }}
-                    Phone: {{ customer_details.phone | default('N/A') }}
-                    Home Ownership: {{ customer_details.home_ownership | default('N/A') }}
-                {% else %}
-                    No customer details available.
-                {% endif %}
-            </pre>
+            {% if customer_details %}
+            <div class="customer-detail">
+                <p><strong>Full Legal Name:</strong> {{ customer_details.fullLegalName | default('N/A') }}</p>
+                <p><strong>Country of Nationality:</strong> {{ customer_details.countryOfNationality | default('N/A') }}</p>
+                <p><strong>Country of Residence:</strong> {{ customer_details.countryOfResidence | default('N/A') }}</p>
+                <p><strong>Date of Birth:</strong> {{ customer_details.dateTimeOfBirth | default('N/A') }}</p>
+                <p><strong>Marital Status:</strong> {{ customer_details.maritalStatus | default('N/A') }}</p>
+                <p><strong>Number of Dependents:</strong> {{ customer_details.numberOfDependents | default('N/A') }}</p>
+                <p><strong>Occupation:</strong> {{ customer_details.occupation | default('N/A') }}</p>
+                <p><strong>Address:</strong><br>
+                    {{ customer_details.address.line1 | default('N/A') }}<br>
+                    {{ customer_details.address.line2 | default('N/A') }}<br>
+                    {{ customer_details.address.line3 | default('N/A') }}<br>
+                    {{ customer_details.address.line4 | default('N/A') }}<br>
+                    {{ customer_details.address.line5 | default('N/A') }}<br>
+                    {{ customer_details.address.postCode | default('N/A') }}
+                </p>
+                <p><strong>Citizenship:</strong> {{ customer_details.citizenship | default('N/A') }}</p>
+                <p><strong>Email:</strong> {{ customer_details.emailAddress | default('N/A') }}</p>
+                <p><strong>Home Phone Number:</strong> {{ customer_details.homePhoneNumber | default('N/A') }}</p>
+                <p><strong>Mobile Phone Number:</strong> {{ customer_details.mobilePhoneNumber | default('N/A') }}</p>
+                <p><strong>KYC Verified:</strong> {{ customer_details.kycVerified | default('N/A') }}</p>
+            </div>
+            {% else %}
+            <p>No customer details available.</p>
+            {% endif %}
         </div>
+
+
 
         <!-- Political Exposure Screening -->
         <div class="response-section">

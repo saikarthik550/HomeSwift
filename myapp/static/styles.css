@@ -151,3 +151,35 @@ header h1 {
 .verify-container .btn-action:hover {
     background-color: #0056b3; /* Darker shade on hover */
 }
+
+.response-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: auto;
+}
+
+.response-section h2 {
+    text-align: center;
+    color: #333;
+}
+
+.customer-detail {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.customer-detail p {
+    margin: 10px 0;
+}
+
+.customer-detail p strong {
+    color: #555;
+}
+
+.customer-detail p br {
+    margin: 0;
+}

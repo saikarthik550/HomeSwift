@@ -5,7 +5,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import json
-
+from datetime import datetime
 app = Flask(__name__)
 
 # Environment variables for sensitive information
@@ -257,15 +257,52 @@ def index():
     customer_id = '1122334455'  # Example customer ID
     id_scheme = 'customerIdentificationNumber'  # Example ID scheme
     customer_details = get_customer_details(API_URL_PREFIX, api_access_token, customer_id, id_scheme)
+    # Original data
+    data = customer_details["data"]
+
+    # Function to format date
+    def format_date(date_str):
+        return datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%B %d, %Y")
+
+    # Mapping for better labels
+    marital_status_mapping = {
+        "unmarriedIndividual": "Unmarried",
+        "marriedIndividual": "Married",
+        # Add other mappings as needed
+    }
+
+    occupation_mapping = {
+        "seniorManagement": "Senior Management",
+        "middleManagement": "Middle Management",
+        # Add other mappings as needed
+    }
+
     if not customer_details:
         customer_details = {"error": "Failed to retrieve customer details"}
     else:
         customer_details = {
-            "name": customer_details["data"]["name"]["fullLegalName"],
-            "address": customer_details["data"]["address"]["line1"],
-            "email": customer_details["data"]["contactDetails"]["emailAddress"],
-            "phone": customer_details["data"]["contactDetails"]["mobilePhoneNumber"],
-            "home_ownership": customer_details["data"]["insightDetails"]["homeOwnership"]
+            "fullLegalName": data["name"]["fullLegalName"],
+            "countryOfNationality": data["countryOfNationality"]["description"],
+            "countryOfResidence": data["countryOfResidence"]["description"],
+            "dateTimeOfBirth": format_date(data["lifeMoments"]["dateTimeOfBirth"]),
+            "maritalStatus": marital_status_mapping.get(data["insightDetails"]["maritalStatus"],
+                                                        data["insightDetails"]["maritalStatus"]),
+            "numberOfDependents": data["insightDetails"]["numberOfDependents"],
+            "occupation": occupation_mapping.get(data["insightDetails"]["occupation"]["description"],
+                                                 data["insightDetails"]["occupation"]["description"]),
+            "address": {
+                "line1": data["address"]["line1"],
+                "line2": data["address"]["line2"],
+                "line3": data["address"]["line3"],
+                "line4": data["address"]["line4"],
+                "line5": data["address"]["line5"],
+                "postCode": data["address"]["postCode"]
+            },
+            "citizenship": data["citizenshipDetails"]["citizenships"][0]["country"]["description"],
+            "emailAddress": data["contactDetails"]["emailAddress"],
+            "homePhoneNumber": data["contactDetails"]["homePhoneNumber"],
+            "mobilePhoneNumber": data["contactDetails"]["mobilePhoneNumber"],
+            "kycVerified": "Yes" if data["kycVerification"]["isVerified"] else "No"
         }
 
     # Perform political exposure screening
