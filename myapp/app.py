@@ -18,14 +18,14 @@ PSU_USERNAME = "123456789012@70947a22-95b0-44b9-9e6f-670c8893baed.example.org"
 # Email credentials
 SENDER_EMAIL = "ashibu6@gmail.com"
 SENDER_PASSWORD = "vgwz ubtw emvw fzml"
-RECIPIENT_EMAIL = "ashwinisugumaran1@gmail.com"
+RECIPIENT_EMAILS  = ["ashwinisugumaran1@gmail.com","saikarthik550@gmail.com","sremana.chittybabu@gmail.com"]
 
 logging.basicConfig(level=logging.DEBUG)
 
 def send_email(subject, body):
     msg = MIMEMultipart()
     msg['From'] = SENDER_EMAIL
-    msg['To'] = RECIPIENT_EMAIL
+    msg['To'] = ', '.join(RECIPIENT_EMAILS)
     msg['Subject'] = subject
 
     msg.attach(MIMEText(body, 'plain'))
@@ -34,8 +34,7 @@ def send_email(subject, body):
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(SENDER_EMAIL, SENDER_PASSWORD)
-        text = msg.as_string()
-        server.sendmail(SENDER_EMAIL, RECIPIENT_EMAIL, text)
+        server.sendmail(SENDER_EMAIL, RECIPIENT_EMAILS, msg.as_string())
         server.quit()
         return "Email sent successfully"
     except Exception as e:
@@ -339,7 +338,7 @@ def report():
 def send_email_route():
     data = request.json
     try:
-        subject = "API Response Summary"
+        subject = "Tenant Wealth Report"
         body = (
             f"Credit Score: {json.dumps(data.get('credit_score', {}), indent=4)}\n\n"
             f"Customer Details: {json.dumps(data.get('customer_details', {}), indent=4)}\n\n"
@@ -390,6 +389,10 @@ def instant_verification():
 @app.route('/consent')
 def consent():
     return render_template('consent.html')  # Your consent page
+
+@app.route('/viewReport')
+def viewReport():
+    return render_template('viewReport.html')
     
 if __name__ == '__main__':
     app.run(debug=True)

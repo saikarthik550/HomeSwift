@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+       .btn-action.disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+        .btn-view-report {
+            background-color: #3633c9;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            text-decoration: none;
+        }
+        .btn-view-report:hover {
+            background-color: #2a2a77;
+        }
+        .btn-view-report:active {
+            background-color: #1f1f6e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Start the Rental Process</h1>
+    </header>
+    
+    <div class="container">
+        <div class="property-info">            
+            <div class="property-details">
+                <p>Property: 2 Bed Flat, City View ,IG1</p>
+                <h4>To streamline your rental process and ensure a smooth and quick experience, we recommend completing this Instant verification step.</h4>
+                <div class="actions">
+                    <button class="btn-action disabled" disabled>Instant Verify</button>
+                    <a href="#" class="btn-action disabled" aria-disabled="true">Normal Verify</a>
+                    <a href="{{ url_for('report') }}" class="btn-view-report">View Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

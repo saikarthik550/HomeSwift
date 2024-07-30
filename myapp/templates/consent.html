@@ -77,6 +77,11 @@
         .cancel:hover {
             background-color: #bbb;
         }
+        .message {
+            font-size: 18px;
+            color: #3633c9;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -98,11 +103,20 @@
             <button onclick="confirmAction()">Confirm</button>
             <button class="cancel" onclick="cancelAction()">Cancel</button>
         </div>
+
+        <!-- Message Display -->
+        <div id="message" class="message"></div>
     </div>
 
     <script>
         function confirmAction() {
-            window.location.href = "{{ url_for('report') }}"; // Redirect to home page or another page
+            // Display a "Congrats" message
+            document.getElementById('message').textContent = "Congrats! You have completed the rental verification process and the report will be available under 'Review report' for your review and confirmation";
+            
+            // Wait for 30 seconds (30000 milliseconds) and then redirect
+            setTimeout(function() {
+                window.location.href = "{{ url_for('viewReport') }}"; // Redirect to viewReport.html
+            }, 3000);
         }
 
         function cancelAction() {
