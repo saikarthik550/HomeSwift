@@ -11,7 +11,7 @@ body {
 /* Header styling */
 header {
     width: 100%; /* Full width */
-    background-color: #007bff; /* Header background color */
+    background-color: #3633c9; /* Header background color */
     color: white; /* Text color */
     padding: 20px 0; /* Padding around the text */
     text-align: center; /* Center-align text */
@@ -79,8 +79,8 @@ header h1 {
     display: inline-block; /* Inline-block for buttons */
     padding: 10px 20px; /* Padding inside the button */
     margin: 10px 0; /* Space around the button */
-    background-color: #007bff; /* Primary button color */
-    color: #fff; /* Text color */
+    background-color: #3633c9; /* Primary button color */
+    color: #0a0101; /* Text color */
     border: none; /* Remove default border */
     border-radius: 5px; /* Rounded corners */
     font-size: 1em; /* Font size for button text */
@@ -91,7 +91,7 @@ header h1 {
 }
 
 .btn-action:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: #3633c9; /* Darker shade on hover */
 }
 
 .btn-highlight {
@@ -138,7 +138,7 @@ header h1 {
     margin: 10px auto; /* Center align buttons with margin */
     padding: 10px 20px; /* Padding inside buttons */
     font-size: 1.1em; /* Slightly larger font size */
-    background-color: #007bff; /* Primary button color */
+    background-color: #3633c9; /* Primary button color */
     color: #fff; /* Text color */
     border: none; /* Remove default border */
     border-radius: 5px; /* Rounded corners */
@@ -149,7 +149,7 @@ header h1 {
 }
 
 .verify-container .btn-action:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: #3633c9; /* Darker shade on hover */
 }
 
 .response-section {

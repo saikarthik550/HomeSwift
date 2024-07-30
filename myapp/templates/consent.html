@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        header {
+            background-color: #3633c9;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .container p {
+            margin-bottom: 20px;
+        }
+        .list-group {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .list-group li {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .button-group {
+            margin-top: 20px;
+        }
+        .button-group button {
+            background-color: #3633c9;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin: 5px;
+        }
+        .button-group button:hover {
+            background-color: #2a2a77;
+            transform: translateY(-2px);
+        }
+        .button-group button:active {
+            background-color: #1f1f6e;
+            transform: translateY(0);
+        }
+        .cancel {
+            background-color: #ccc;
+            color: #000;
+        }
+        .cancel:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Consent
+    </header>
+
+    <div class="container">
+        <p>We take your privacy seriously. To offer you the best possible service, we need your permission to review your account information and financial history:</p>
+        <ul class="list-group">
+            <li>Access Personal Details</li>
+            <li>Access Credit Score</li>
+            <li>Access Account Transactions</li>
+            <li>Access Political/Financial Crime Screening</li>
+        </ul>
+
+        <div class="button-group">
+            <p>Do you agree to this verification process?</p>
+            <button onclick="confirmAction()">Confirm</button>
+            <button class="cancel" onclick="cancelAction()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        function confirmAction() {
+            window.location.href = "{{ url_for('report') }}"; // Redirect to home page or another page
+        }
+
+        function cancelAction() {
+            window.location.href = "{{ url_for('index') }}"; // Go back to the previous page
+        }
+    </script>
+</body>
+</html>

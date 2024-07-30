@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify with NatWest</title>
+    <title>Instant Verification</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="verify-container">
-        <h2>Are you new to NatWest?</h2>
-        <a href="{{ url_for('new_customer') }}" class="btn-action">Yes, I am new</a>
-        <a href="{{ url_for('existing_customer') }}" class="btn-action">I am an existing customer</a>
+        <h2>Welcome to Natwest Instant Verification Page</h2>
+        <a href="{{ url_for('new_customer') }}" class="btn-action">Aspiring Natwest Customer</a>
+        <a href="{{ url_for('existing_customer') }}" class="btn-action">Existing Natwest Customer</a>
     </div>
 </body>
 </html>

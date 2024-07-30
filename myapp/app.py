@@ -201,8 +201,13 @@ def get_transaction_details(api_url_prefix, access_token, account_id):
             app.logger.error(f"Response Content: {e.response.content}")
         return []
 
+
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/report')
+def report():
     token_endpoint, authorization_endpoint = get_token_endpoint()
     if not token_endpoint or not authorization_endpoint:
         return jsonify({"error": "Failed to retrieve endpoints"}), 500
@@ -322,7 +327,7 @@ def index():
         transaction_details = {"error": "Failed to retrieve transaction details"}
 
     # Render the template
-    response = render_template('index.html',
+    response = render_template('report.html',
                                credit_score=credit_score_data,
                                customer_details=customer_details,
                                political_status=political_status,
@@ -348,40 +353,7 @@ def send_email_route():
     except Exception as e:
         app.logger.error(f"Error in send_email_route: {e}")
         return jsonify({"success": False, "message": "Failed to send email"}), 500
-    
-@app.route('/download_response', methods=['POST'])
-def download_response():
-    data = request.json
-
-    # Construct the file content
-    file_content = f"""
-    Credit Score:
-    Score: {data['credit_score']['ficoScore']} ({data['credit_score']['ficoRange']})
-
-    Customer Details:
-    Name: {data['customer_details'].get('name', 'N/A')}
-    Address: {data['customer_details'].get('address', 'N/A')}
-    Email: {data['customer_details'].get('email', 'N/A')}
-    Phone: {data['customer_details'].get('phone', 'N/A')}
-    Home Ownership: {data['customer_details'].get('home_ownership', 'N/A')}
-
-    Political Exposure Screening:
-    Status: {data['political_status']}
-
-    Transaction Details:
-    {data['transaction_details']}
-    """
-
-    return Response(
-        file_content,
-        mimetype='text/plain',
-        headers={"Content-Disposition": "attachment;filename=api_response.txt"}
-    )
-
-@app.route('/home')
-def home():
-    return render_template('home.html')
-
+ 
 @app.route('/existing_customer')
 def existing_customer():
     return render_template('existing_customer.html')
@@ -405,7 +377,7 @@ def login():
         # For example, you might have some database check or API call
 
         # Assuming the customer_number is valid, redirect to the home page
-        return redirect(url_for('index'))
+        return redirect(url_for('consent'))
 
     except Exception as e:
         app.logger.error(f"Error in login route: {e}")
@@ -414,6 +386,10 @@ def login():
 @app.route('/instant_verification')
 def instant_verification():
     return render_template('instantVerification.html')
+
+@app.route('/consent')
+def consent():
+    return render_template('consent.html')  # Your consent page
     
 if __name__ == '__main__':
     app.run(debug=True)

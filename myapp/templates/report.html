@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Wealth</title>
+    <style>
+        /* Existing CSS */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #281530;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        .response-section {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .response-section h2 {
+            background-color: #3633c9;
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 0;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        .response-section p, .response-section pre {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            margin: 10px 0;
+            font-size: 1em;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .status.success {
+            color: #4CAF50; /* Green */
+        }
+        .status.failure {
+            color: #f44336; /* Red */
+        }
+        .circle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+        .circle svg {
+            transform: rotate(-90deg);
+            overflow: visible;
+        }
+        .circle .background,
+        .circle .progress {
+            fill: none;
+            stroke-width: 15;
+        }
+        .circle .background {
+            stroke: #e0e0e0;
+        }
+        .circle .progress {
+            stroke: #3633c9;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .circle .text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .circle .text p {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #3633c9;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 20px;
+            font-size: 1em;
+            color: #ffffff;
+            background-color: #3633c9;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #3633c9;
+        }
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            z-index: 1000;
+            font-size: 1em;
+        }
+        .notification.error {
+            background-color: #f44336;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3633c9;
+            color: #ffffff;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .button-container button {
+            flex: 1; /* Makes buttons occupy equal width */
+            margin: 0 10px; /* Margin between buttons */
+        }
+        .button-container button:first-child {
+            margin-right: auto; /* Pushes the first button to the left */
+        }
+        .button-container button:last-child {
+            margin-left: auto; /* Pushes the last button to the right */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Wealth Overview</h1>
+
+        <!-- Credit Score -->
+        <div class="response-section">
+            <h2>Credit Score</h2>
+            <div class="circle">
+                <svg width="150" height="150">
+                    <circle class="background" cx="75" cy="75" r="70"/>
+                    <circle class="progress" cx="75" cy="75" r="70"/>
+                </svg>
+                <div class="text">
+                    <p>Score: {{ credit_score.ficoScore }} ({{ credit_score.ficoRange }})</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Details -->
+        <div class="response-section">
+            <h2>Customer Details</h2>
+            {% if customer_details %}
+            <div class="customer-detail">
+                <p><strong>Full Legal Name:</strong> {{ customer_details.fullLegalName | default('N/A') }}</p>
+                <p><strong>Country of Nationality:</strong> {{ customer_details.countryOfNationality | default('N/A') }}</p>
+                <p><strong>Country of Residence:</strong> {{ customer_details.countryOfResidence | default('N/A') }}</p>
+                <p><strong>Date of Birth:</strong> {{ customer_details.dateTimeOfBirth | default('N/A') }}</p>
+                <p><strong>Marital Status:</strong> {{ customer_details.maritalStatus | default('N/A') }}</p>
+                <p><strong>Number of Dependents:</strong> {{ customer_details.numberOfDependents | default('N/A') }}</p>
+                <p><strong>Occupation:</strong> {{ customer_details.occupation | default('N/A') }}</p>
+                <p><strong>Address:</strong><br>
+                    {{ customer_details.address.line1 | default('N/A') }}<br>
+                    {{ customer_details.address.line2 | default('N/A') }}<br>
+                    {{ customer_details.address.line3 | default('N/A') }}<br>
+                    {{ customer_details.address.line4 | default('N/A') }}<br>
+                    {{ customer_details.address.line5 | default('N/A') }}<br>
+                    {{ customer_details.address.postCode | default('N/A') }}
+                </p>
+                <p><strong>Citizenship:</strong> {{ customer_details.citizenship | default('N/A') }}</p>
+                <p><strong>Email:</strong> {{ customer_details.emailAddress | default('N/A') }}</p>
+                <p><strong>Home Phone Number:</strong> {{ customer_details.homePhoneNumber | default('N/A') }}</p>
+                <p><strong>Mobile Phone Number:</strong> {{ customer_details.mobilePhoneNumber | default('N/A') }}</p>
+                <p><strong>KYC Verified:</strong> {{ customer_details.kycVerified | default('N/A') }}</p>
+            </div>
+            {% else %}
+            <p>No customer details available.</p>
+            {% endif %}
+        </div>
+
+
+
+        <!-- Political Exposure Screening -->
+        <div class="response-section">
+            <h2>Political Exposure Screening</h2>
+            <pre>
+                {% if political_status %}
+                    <span class="status {{ political_status | lower }}">{{ political_status }}</span>
+                {% else %}
+                    No political exposure data available.
+                {% endif %}
+            </pre>
+        </div>
+
+        <!-- Transaction Details -->
+        <div class="response-section">
+            <h2>Transaction Details</h2>
+            {% if transaction_details %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Transaction Amount</th>
+                        <th>Transaction Date</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transaction_details %}
+                    <tr>
+                        <td>{{ transaction.TransactionId }}</td>
+                        <td>{{ transaction.Amount.Amount }} {{ transaction.Amount.Currency }}</td>
+                        <td>{{ transaction.BookingDateTime }}</td>
+                        <td>{{ transaction.TransactionInformation }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <pre>No transaction details available.</pre>
+            {% endif %}
+        </div>
+
+        <!-- Button Container -->
+        <div class="button-container">
+            <!-- Send Email Button -->
+            <button id="sendMailButton" class="button">Send Mail</button>
+            <button id="homeButton" class="button" onclick="goHome()">Home</button>
+        </div>
+    </div>
+
+    <!-- Notification container -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        function goHome() {
+            window.location.href = "{{ url_for('index') }}"; // Adjust 'home' to the actual endpoint for the home page
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Circle Progress
+    var ficoScore = {{ credit_score.ficoScore }};
+    var maxScore = 850; // Maximum possible credit score
+    var percentage = (ficoScore / maxScore) * 100;
+    var strokeDashoffset = 440 - (440 * (percentage / 100));
+
+    var progressCircle = document.querySelector('.circle .progress');
+    progressCircle.style.strokeDashoffset = strokeDashoffset;
+
+    document.getElementById('sendMailButton').addEventListener('click', function() {
+        var data = {
+            credit_score: {{ credit_score | tojson }},
+            customer_details: {
+                fullLegalName: "{{ customer_details.fullLegalName | default('N/A') }}",
+                countryOfNationality: "{{ customer_details.countryOfNationality | default('N/A') }}",
+                countryOfResidence: "{{ customer_details.countryOfResidence | default('N/A') }}",
+                dateTimeOfBirth: "{{ customer_details.dateTimeOfBirth | default('N/A') }}",
+                emailAddress: "{{ customer_details.emailAddress | default('N/A') }}"
+            },
+            political_status: "{{ political_status }}",
+            transaction_details: [
+                {% for transaction in transaction_details %}
+                {
+                    TransactionId: "{{ transaction.TransactionId | default('N/A') }}",
+                    Amount: {
+                        Amount: "{{ transaction.Amount.Amount | default('N/A') }}",
+                        Currency: "{{ transaction.Amount.Currency | default('N/A') }}"
+                    },
+                    BookingDateTime: "{{ transaction.BookingDateTime | default('N/A') }}",
+                    TransactionInformation: "{{ transaction.TransactionInformation | default('N/A') }}"
+                }
+                {% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        };
+
+        fetch('/send_email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message.includes('successfully')) {
+                showNotification('Email sent successfully!', 'success');
+            } else {
+                showNotification('Failed to send email.', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error sending email', 'error');
+            console.error('Error:', error);
+        });
+    });
+
+    function showNotification(message, type) {
+        var notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.className = 'notification ' + (type === 'error' ? 'error' : '');
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 6000);
+    }
+});
+    </script>
+</body>
+</html>
