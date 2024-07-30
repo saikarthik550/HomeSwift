@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Consent for Verification</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,7 +87,7 @@
 </head>
 <body>
     <header>
-        Consent
+        <h1>Consent</h1>
     </header>
 
     <div class="container">
@@ -111,7 +112,7 @@
     <script>
         function confirmAction() {
             // Display a "Congrats" message
-            document.getElementById('message').textContent = "Congrats! You have completed the rental verification process and the report will be available under 'Review report' for your review and confirmation";
+            //document.getElementById('message').textContent = "Congrats! You have completed the rental verification process and the report will be available under 'Review report' for your review and confirmation";
             
             // Wait for 30 seconds (30000 milliseconds) and then redirect
             setTimeout(function() {
