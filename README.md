@@ -1,6 +1,6 @@
 # HomeSwift
 
-**Description:** This project is a Flask application that interacts with the NatWest API to retrieve and display aggregated customer data, credit scores, and transaction details.
+**Description:** This project is a Flask application that interacts with the Bank of API's sandbox to retrieve and display aggregated customer data, credit scores, and transaction details.
 
 ## Setup Instructions
 
@@ -36,5 +36,5 @@
 
 ## Usage
 
-Navigate to `http://127.0.0.1:5000/](http://127.0.0.1:5000/home` in your web browser to access the application. 
+Navigate to `http://127.0.0.1:5000/` in your web browser to access the application. 
 
